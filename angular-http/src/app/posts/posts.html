@@ -1,1 +1,49 @@
-<p>posts works!</p>
+<h2>Post da JSONPlaceholder</h2>
+
+<!-- Form con input numerico e pulsanti -->
+<div class="row g-2 mb-3">
+  <div class="col-auto">
+    <input #numero type="number" class="form-control" value="1" min="1" aria-label="Numero del post">
+  </div>
+  <div class="col-auto">
+    <button type="button" class="btn btn-primary" (click)="caricaUno(numero.value)">
+      Carica un post
+    </button>
+  </div>
+
+  <!-- AGGIUNTA PASSO 4: Pulsante Carica tutti -->
+  <div class="col-auto">
+    <button type="button" class="btn btn-outline-primary" (click)="caricaTutti()">
+      Carica tutti
+    </button>
+  </div>
+</div>
+
+<!-- Indicatore di caricamento -->
+@if (loading()) {
+  <div class="spinner-border text-primary mb-3" role="status"></div>
+}
+
+<!-- Messaggio di errore -->
+@if (errore()) {
+  <div class="alert alert-danger">{{ errore() }}</div>
+}
+
+<!-- Visualizzazione singolo post -->
+@if (post(); as p) {
+  <h3 class="h5">Ultima risposta ricevuta (post n. {{ p.id }})</h3>
+  <pre class="bg-body-tertiary p-3 rounded">{{ p | json }}</pre>
+}
+
+<!--Visualizzazione lista di tutti i post -->
+@if (posts().length > 0) {
+  <h3 class="h5">Tutti i post: {{ posts().length }}</h3>
+  <div class="list-group">
+    @for (p of posts(); track p.id) {
+      <div class="list-group-item">
+        <h4 class="h6 mb-1">{{ p.id }}. {{ p.title }}</h4>
+        <p class="mb-0 small text-body-secondary">{{ p.body }}</p>
+      </div>
+    }
+  </div>
+}
